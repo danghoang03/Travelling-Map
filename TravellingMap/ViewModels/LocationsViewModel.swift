@@ -18,13 +18,18 @@ class LocationsViewModel {
     // Current location on map
     var mapLocation: Location {
         didSet {
-            updatePosition(location: location)
+            updatePosition(location: mapLocation)
         }
     }
     
+    // Current region on map
     var position: MapCameraPosition = .region(MKCoordinateRegion())
-    
     let mapSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+    
+    // Show list of locations
+    var showLocationsList: Bool = false
+    
+    
     
     init() {
         let locations = LocationsDataService.locations
@@ -39,6 +44,12 @@ class LocationsViewModel {
                 center: location.coordinates,
                 span: mapSpan
             ))
+        }
+    }
+    
+    func toggleLocationsList() {
+        withAnimation(.easeInOut) {
+            showLocationsList.toggle()
         }
     }
 }
