@@ -52,4 +52,11 @@ class LocationsViewModel {
             showLocationsList.toggle()
         }
     }
+    
+    func showNextLocation(location: Location) {
+        withAnimation(.easeInOut) {
+            self.mapLocation = location
+            showLocationsList = false
+        }
+    }
 }
