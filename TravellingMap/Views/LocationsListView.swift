@@ -11,18 +11,24 @@ struct LocationsListView: View {
     @Environment(LocationsViewModel.self) var vm
     
     var body: some View {
-        List {
-            ForEach(vm.locations) { location in
-                Button {
-                    vm.showNextLocation(location: location)
-                } label: {
-                    listRowView(location: location)
-                }
-                    .padding(.vertical, 4)
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                ForEach(vm.locations) { location in
+                    Button {
+                        vm.showNextLocation(location: location)
+                    } label: {
+                        listRowView(location: location)
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.vertical, 10)
                     .listRowBackground(Color.clear)
+                    Divider()
+                        .padding(.leading, 60)
+                }
             }
         }
-        .listStyle(.plain)
+        .frame(height: 250)
+        .background(Color.clear)
     }
 }
 
@@ -32,7 +38,7 @@ extension LocationsListView {
             if let image = location.imageNames.first {
                 Image(image)
                     .resizable()
-                    .scaledToFit()
+                    .scaledToFill()
                     .frame(width: 44, height: 44)
                     .cornerRadius(10)
             }
@@ -40,8 +46,10 @@ extension LocationsListView {
             VStack(alignment: .leading) {
                 Text(location.name)
                     .font(.headline)
+                    .foregroundStyle(.primary)
                 Text(location.cityName)
                     .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
