@@ -9,6 +9,13 @@ import SwiftUI
 
 struct LocationMapAnnotationView: View {
     let accentColor = Color.accentColor
+    let location: Location
+    @Environment(LocationsViewModel.self) var vm: LocationsViewModel?
+    private var isSelected: Bool {
+        guard let vm = vm else { return true }
+        return vm.mapLocation == location
+    }
+    @State private var scale: CGFloat = 0.7
     
     var body: some View {
         VStack(spacing: 0) {
@@ -31,9 +38,19 @@ struct LocationMapAnnotationView: View {
                 .offset(y: -3)
                 .padding(.bottom, 40)
         }
+        .scaleEffect(scale)
+        .onAppear {
+            scale = isSelected ? 1.0 : 0.7
+        }
+        .onChange(of: vm?.mapLocation) {
+            withAnimation(.default) {
+                scale = isSelected ? 1.0 : 0.7
+            }
+        }
     }
 }
 
 #Preview {
-    LocationMapAnnotationView()
+    LocationMapAnnotationView(location: LocationsDataService.locations.first!)
+        .environment(LocationsViewModel())
 }

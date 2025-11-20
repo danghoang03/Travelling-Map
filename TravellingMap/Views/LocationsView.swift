@@ -63,7 +63,7 @@ extension LocationsView {
         Map(position: Bindable(vm).position) {
             ForEach(vm.locations) { location in
                 Annotation(location.name, coordinate: location.coordinates) {
-                    LocationMapAnnotationView()
+                    LocationMapAnnotationView(location: location)
                         .scaleEffect(vm.mapLocation == location ? 1 : 0.7)
                         .shadow(radius: 10)
                         .onTapGesture {

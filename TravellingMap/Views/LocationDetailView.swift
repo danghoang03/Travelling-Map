@@ -78,7 +78,7 @@ extension LocationDetailView {
             span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
         return Map(position: .constant(position)) {
             Annotation(location.name, coordinate: location.coordinates) {
-                LocationMapAnnotationView()
+                LocationMapAnnotationView(location: location)
                     .shadow(radius: 10)
             }
         }
