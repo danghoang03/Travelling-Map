@@ -13,33 +13,14 @@ struct LocationsView: View {
     
     var body: some View {
         ZStack {
-            Map(position: Bindable(vm).position) {
-                ForEach(vm.locations) { location in
-                    Annotation(location.name, coordinate: location.coordinates) {
-                        // Custom Map Annotation
-                    }
-                }
-            }
-            .ignoresSafeArea()
+            mapLayer
+                .ignoresSafeArea()
             
             VStack(spacing: 0) {
                 header
                 .padding()
-                    
-                Spacer()
-                
-                ZStack {
-                    ForEach(vm.locations) { location in
-                        if vm.mapLocation == location {
-                            LocationPreviewView(location: location)
-                                .shadow(color: Color.black.opacity(0.3), radius: 20)
-                                .padding()
-                                .transition(.asymmetric(
-                                    insertion: .move(edge: .trailing),
-                                    removal: .move(edge: .leading)))
-                        }
-                    }
-                }
+                Spacer()  
+                locationPreview
                 
             }
         }
@@ -73,6 +54,37 @@ extension LocationsView {
         .background(.thickMaterial)
         .cornerRadius(10)
         .shadow(color: Color.black.opacity(0.5), radius: 20, x: 0, y: 15)
+    }
+    
+    private var mapLayer: some View {
+        Map(position: Bindable(vm).position) {
+            ForEach(vm.locations) { location in
+                Annotation(location.name, coordinate: location.coordinates) {
+                    LocationMapAnnotationView()
+                        .scaleEffect(vm.mapLocation == location ? 1 : 0.7)
+                        .shadow(radius: 10)
+                        .onTapGesture {
+                            vm.showNextLocation(location: location)
+                        }
+                        .animation(.default, value: vm.mapLocation)
+                }
+            }
+        }
+    }
+    
+    private var locationPreview: some View {
+        ZStack {
+            ForEach(vm.locations) { location in
+                if vm.mapLocation == location {
+                    LocationPreviewView(location: location)
+                        .shadow(color: Color.black.opacity(0.3), radius: 20)
+                        .padding()
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .trailing),
+                            removal: .move(edge: .leading)))
+                }
+            }
+        }
     }
 }
 
