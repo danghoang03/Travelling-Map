@@ -29,6 +29,8 @@ class LocationsViewModel {
     // Show list of locations
     var showLocationsList: Bool = false
     
+    // Show location detail sheet
+    var sheetLocation: Location? = nil
     
     
     init() {

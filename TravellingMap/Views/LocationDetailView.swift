@@ -75,7 +75,7 @@ extension LocationDetailView {
     private var mapLayer: some View {
         let position = MapCameraPosition.region(MKCoordinateRegion(
             center: location.coordinates,
-            span: vm.mapSpan))
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
         return Map(position: .constant(position)) {
             Annotation(location.name, coordinate: location.coordinates) {
                 LocationMapAnnotationView()
@@ -89,7 +89,7 @@ extension LocationDetailView {
     
     private var backButton: some View {
         Button {
-            
+            vm.sheetLocation = nil
         } label: {
             Image(systemName: "xmark")
                 .font(.headline)
