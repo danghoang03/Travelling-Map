@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct LocationMapAnnotationView: View {
+struct LocationMapAnnotationView: View, Equatable {
     let accentColor = Color.accentColor
-    let location: Location
+    let locationId: String
     let isSelected: Bool
     @State private var scale: CGFloat = 0.7
     
@@ -44,8 +44,12 @@ struct LocationMapAnnotationView: View {
             }
         }
     }
+    
+    static func == (lhs: LocationMapAnnotationView, rhs: LocationMapAnnotationView) -> Bool {
+        lhs.locationId == rhs.locationId && lhs.isSelected == rhs.isSelected
+    }
 }
 
 #Preview {
-    LocationMapAnnotationView(location: LocationsDataService.locations.first!, isSelected: true)
+    LocationMapAnnotationView(locationId: "Preview", isSelected: true)
 }

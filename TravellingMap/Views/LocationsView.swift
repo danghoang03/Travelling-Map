@@ -60,10 +60,12 @@ extension LocationsView {
     }
     
     private var mapLayer: some View {
-        Map(position: Bindable(vm).position) {
+        let selectedId = vm.mapLocation.id
+        return Map(position: Bindable(vm).position) {
             ForEach(vm.locations) { location in
                 Annotation(location.name, coordinate: location.coordinates) {
-                    LocationMapAnnotationView(location: location, isSelected: vm.mapLocation == location)
+                    LocationMapAnnotationView(locationId: selectedId, isSelected: location.id == selectedId)
+                        .equatable()
                         .onTapGesture {
                             vm.showNextLocation(location: location)
                         }
