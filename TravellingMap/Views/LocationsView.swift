@@ -64,7 +64,7 @@ extension LocationsView {
         return Map(position: Bindable(vm).position) {
             ForEach(vm.locations) { location in
                 Annotation(location.name, coordinate: location.coordinates) {
-                    LocationMapAnnotationView(locationId: selectedId, isSelected: location.id == selectedId)
+                    LocationMapAnnotationView(locationId: location.id, isSelected: location.id == selectedId)
                         .equatable()
                         .onTapGesture {
                             vm.showNextLocation(location: location)
