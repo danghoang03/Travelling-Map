@@ -10,11 +10,7 @@ import SwiftUI
 struct LocationMapAnnotationView: View {
     let accentColor = Color.accentColor
     let location: Location
-    @Environment(LocationsViewModel.self) var vm: LocationsViewModel?
-    private var isSelected: Bool {
-        guard let vm = vm else { return true }
-        return vm.mapLocation == location
-    }
+    let isSelected: Bool
     @State private var scale: CGFloat = 0.7
     
     var body: some View {
@@ -42,15 +38,14 @@ struct LocationMapAnnotationView: View {
         .onAppear {
             scale = isSelected ? 1.0 : 0.7
         }
-        .onChange(of: vm?.mapLocation) {
+        .onChange(of: isSelected) { oldValue, newValue in
             withAnimation(.default) {
-                scale = isSelected ? 1.0 : 0.7
+                scale = newValue ? 1.0 : 0.7
             }
         }
     }
 }
 
 #Preview {
-    LocationMapAnnotationView(location: LocationsDataService.locations.first!)
-        .environment(LocationsViewModel())
+    LocationMapAnnotationView(location: LocationsDataService.locations.first!, isSelected: true)
 }
