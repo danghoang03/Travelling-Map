@@ -13,8 +13,14 @@ struct LocationsView: View {
     
     var body: some View {
         ZStack {
-            Map(position: Bindable(vm).position)
-                .ignoresSafeArea()
+            Map(position: Bindable(vm).position) {
+                ForEach(vm.locations) { location in
+                    Annotation(location.name, coordinate: location.coordinates) {
+                        // Custom Map Annotation
+                    }
+                }
+            }
+            .ignoresSafeArea()
             
             VStack(spacing: 0) {
                 header
