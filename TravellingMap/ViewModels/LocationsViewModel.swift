@@ -13,10 +13,10 @@ import MapKit
 @Observable
 class LocationsViewModel {
     // All loaded locations
-    var locations: [Location]
+    var locations: [Location] = []
     
     // Current location on map
-    var mapLocation: Location {
+    var mapLocation: Location? = nil {
         didSet {
             updatePosition(location: mapLocation)
         }
@@ -34,13 +34,26 @@ class LocationsViewModel {
     
     
     init() {
-        let locations = LocationsDataService.locations
-        self.locations = locations
-        self.mapLocation = locations.first!
-        updatePosition(location: locations.first!)
+        Task {
+            await loadData()
+        }
     }
     
-    private func updatePosition(location: Location) {
+    private func loadData() async {
+        do {
+            let locations = try await LocationsDataService.shared.fetchLocations()
+            self.locations = locations
+            
+            if let firstLocation = locations.first {
+                self.mapLocation = firstLocation
+            }
+        } catch {
+            print("Error loading locations: \(error.localizedDescription)")
+        }
+    }
+    
+    private func updatePosition(location: Location?) {
+        guard let location = location else { return }
         withAnimation(.easeInOut) {
             self.position = .region(MKCoordinateRegion(
                 center: location.coordinates,

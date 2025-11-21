@@ -8,13 +8,18 @@
 import Foundation
 import MapKit
 
-struct Location: Identifiable, Equatable {
+struct Location: Identifiable, Equatable, Codable {
     let name: String
     let cityName: String
-    let coordinates: CLLocationCoordinate2D
+    let latitude: Double
+    let longitude: Double
     let description: String
     let imageNames: [String]
     let link: String
+    
+    var coordinates: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
     
     var id: String {
         name + cityName
