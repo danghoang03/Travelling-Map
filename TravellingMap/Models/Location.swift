@@ -14,7 +14,7 @@ struct Location: Identifiable, Equatable, Codable {
     let latitude: Double
     let longitude: Double
     let description: String
-    let imageNames: [String]
+    let imageURLs: [String]
     let link: String
     
     var coordinates: CLLocationCoordinate2D {

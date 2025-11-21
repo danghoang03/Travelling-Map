@@ -31,11 +31,16 @@ struct LocationsView: View {
 }
 
 extension LocationsView {
+    private var headerTitle: String {
+        let name = vm.mapLocation?.name ?? ""
+        let cityName = vm.mapLocation?.cityName ?? ""
+        return name + ", " + cityName
+    }
     private var header: some View {
         VStack {
             Button(action: vm.toggleLocationsList) {
-                Text(vm.mapLocation.name + ", " + vm.mapLocation.cityName)
-                    .font(.title2)
+                Text(headerTitle)
+                    .font(.title3)
                     .fontWeight(.black)
                     .foregroundStyle(.primary)
                     .frame(height: 55)
@@ -52,6 +57,7 @@ extension LocationsView {
             .buttonStyle(.plain)
             if vm.showLocationsList {
                 LocationsListView()
+                    .padding()
             }
         }
         .background(.thickMaterial)
@@ -60,7 +66,7 @@ extension LocationsView {
     }
     
     private var mapLayer: some View {
-        let selectedId = vm.mapLocation.id
+        let selectedId = vm.mapLocation?.id
         return Map(position: Bindable(vm).position) {
             ForEach(vm.locations) { location in
                 Annotation(location.name, coordinate: location.coordinates) {

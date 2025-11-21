@@ -24,7 +24,7 @@ class LocationsViewModel {
     
     // Current region on map
     var position: MapCameraPosition = .region(MKCoordinateRegion())
-    let mapSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+    let mapSpan = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     
     // Show list of locations
     var showLocationsList: Bool = false

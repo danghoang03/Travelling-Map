@@ -35,12 +35,16 @@ struct LocationsListView: View {
 extension LocationsListView {
     private func listRowView(location: Location) -> some View {
         HStack {
-            if let image = location.imageNames.first {
-                Image(image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 44, height: 44)
-                    .cornerRadius(10)
+            if let imageURL = location.imageURLs.first {
+                AsyncImage(url: URL(string: imageURL)) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    ProgressView()
+                }
+                .frame(width: 44, height: 44)
+                .cornerRadius(10)
             }
             
             VStack(alignment: .leading) {
