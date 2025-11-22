@@ -7,18 +7,42 @@
 
 import Foundation
 import MapKit
+import SwiftData
 
 class LocationsDataService {
     static let shared = LocationsDataService()
     
+    private let refreshInterval: TimeInterval = 86400
+    
     private init() {}
     
-    func fetchLocations() async throws -> [Location] {
-        guard let url = URL(string: "https://gist.githubusercontent.com/danghoang03/c499b00fb63cbf76cf32ac94dcc85d24/raw/5c62ec40311419ee5a14b92047c6d07369085596/LocationsData.json") else {
-            throw URLError(.badURL)
+    private func shouldFetchData() -> Bool {
+        let lastFetchDate = UserDefaults.standard.object(forKey: "lastFetchDate") as? Date ?? Date.distantPast
+        return Date().timeIntervalSince(lastFetchDate) > refreshInterval
+    }
+    
+    func fetchAndSaveData(context: ModelContext) async {
+        guard shouldFetchData() else { return }
+        do {
+            guard let url = URL(string: "https://gist.githubusercontent.com/danghoang03/c499b00fb63cbf76cf32ac94dcc85d24/raw/5c62ec40311419ee5a14b92047c6d07369085596/LocationsData.json") else {
+                print("URL Error")
+                return
+            }
+            
+            let (data,_) = try await URLSession.shared.data(from: url)
+            let locationsDTO = try JSONDecoder().decode([LocationDTO].self, from: data)
+            for locationDTO in locationsDTO {
+                let locationModel = locationDTO.toModel()
+                context.insert(locationModel)
+            }
+            
+            UserDefaults.standard.set(Date(), forKey: "lastFetchDate")
+        } catch {
+            print("Error fetching data: \(error.localizedDescription)")
         }
-        let (data,_) = try await URLSession.shared.data(from: url)
-        let locations = try JSONDecoder().decode([Location].self, from: data)
-        return locations
+    }
+    
+    func forceRefresh() {
+        UserDefaults.standard.removeObject(forKey: "lastFetchDate")
     }
 }
