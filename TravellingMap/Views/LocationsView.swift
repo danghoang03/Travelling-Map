@@ -7,9 +7,12 @@
 
 import SwiftUI
 import MapKit
+import SwiftData
 
 struct LocationsView: View {
     @Environment(LocationsViewModel.self) var vm
+    @Environment(\.modelContext) var context
+    @Query(sort: \Location.cityName) var locations: [Location]
     
     var body: some View {
         ZStack {
@@ -26,6 +29,15 @@ struct LocationsView: View {
         }
         .sheet(item: Bindable(vm).sheetLocation, onDismiss: nil) { location in
             LocationDetailView(location: location)
+        }
+        .task {
+            await LocationsDataService.shared.fetchAndSaveData(context: context)
+        }
+        .onChange(of: locations, initial: true) { oldValue, newValue in
+            vm.locations = newValue
+            if vm.mapLocation == nil, let first = newValue.first {
+                vm.mapLocation = first
+            }
         }
     }
 }

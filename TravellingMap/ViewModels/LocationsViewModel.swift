@@ -33,24 +33,7 @@ class LocationsViewModel {
     var sheetLocation: Location? = nil
     
     
-    init() {
-        Task {
-            await loadData()
-        }
-    }
-    
-    private func loadData() async {
-        do {
-            let locations = try await LocationsDataService.shared.fetchLocations()
-            self.locations = locations
-            
-            if let firstLocation = locations.first {
-                self.mapLocation = firstLocation
-            }
-        } catch {
-            print("Error loading locations: \(error.localizedDescription)")
-        }
-    }
+    init() {}
     
     private func updatePosition(location: Location?) {
         guard let location = location else { return }

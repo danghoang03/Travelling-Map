@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct TravellingMapApp: App {
@@ -16,5 +17,6 @@ struct TravellingMapApp: App {
             LocationsView()
                 .environment(vm)
         }
+        .modelContainer(for: Location.self)
     }
 }
