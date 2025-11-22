@@ -9,6 +9,7 @@ import Foundation
 import MapKit
 import SwiftData
 
+@MainActor
 class LocationsDataService {
     static let shared = LocationsDataService()
     
@@ -31,11 +32,18 @@ class LocationsDataService {
             
             let (data,_) = try await URLSession.shared.data(from: url)
             let locationsDTO = try JSONDecoder().decode([LocationDTO].self, from: data)
+            
+            let receivedIDs = locationsDTO.map { $0.name + $0.cityName }
+            
+            try? context.delete(model: Location.self, where: #Predicate { location in
+                !receivedIDs.contains(location.id)
+            })
+            
             for locationDTO in locationsDTO {
                 let locationModel = locationDTO.toModel()
                 context.insert(locationModel)
             }
-            
+            try context.save()
             UserDefaults.standard.set(Date(), forKey: "lastFetchDate")
         } catch {
             print("Error fetching data: \(error.localizedDescription)")
