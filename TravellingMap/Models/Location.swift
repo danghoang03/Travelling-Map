@@ -7,22 +7,32 @@
 
 import Foundation
 import MapKit
+import SwiftData
 
-struct Location: Identifiable, Equatable, Codable {
-    let name: String
-    let cityName: String
-    let latitude: Double
-    let longitude: Double
-    let description: String
-    let imageURLs: [String]
-    let link: String
+@Model
+class Location: Equatable {
+    @Attribute(.unique) var id: String
+    var name: String
+    var cityName: String
+    var latitude: Double
+    var longitude: Double
+    var desc: String
+    var imageURLs: [String]
+    var link: String
     
     var coordinates: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
     
-    var id: String {
-        name + cityName
+    init(id: String, name: String, cityName: String, latitude: Double, longitude: Double, desc: String, imageURLs: [String], link: String) {
+        self.id = id
+        self.name = name
+        self.cityName = cityName
+        self.latitude = latitude
+        self.longitude = longitude
+        self.desc = desc
+        self.imageURLs = imageURLs
+        self.link = link
     }
     
     // Equatable
