@@ -13,6 +13,7 @@ struct LocationsView: View {
     @Environment(LocationsViewModel.self) var vm
     @Environment(\.modelContext) var context
     @Query(sort: \Location.cityName) var locations: [Location]
+    @State var displayPreview: Bool = false
     
     var body: some View {
         ZStack {
@@ -22,21 +23,46 @@ struct LocationsView: View {
             VStack(spacing: 0) {
                 header
                 .padding()
-                Spacer()  
-                locationPreview
+                Spacer()
+                userLocationButton
+                if displayPreview {
+                    locationPreview
+                }
                 
             }
         }
         .sheet(item: Bindable(vm).sheetLocation, onDismiss: nil) { location in
             LocationDetailView(location: location)
         }
+        .alert("Cần quyền truy cập vị trí", isPresented: Bindable(vm).showLocationDeniedAlert) {
+            Button("Hủy", role: .cancel) { }
+            Button("Mở Cài đặt") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url)
+                    }
+                }
+            }
+        } message: {
+            Text("Vui lòng cấp quyền truy cập vị trí trong Cài đặt để ứng dụng có thể hiển thị vị trí của bạn trên bản đồ.")
+        }
         .task {
             await LocationsDataService.shared.fetchAndSaveData(context: context)
         }
+        .onChange(of: vm.locationManager.authorizationStatus) { oldValue, newValue in
+            vm.checkLocationAuthorization()
+        }
         .onChange(of: locations, initial: true) { oldValue, newValue in
             vm.locations = newValue
-            if vm.mapLocation == nil, let first = newValue.first {
-                vm.mapLocation = first
+        }
+        .onChange(of: vm.mapLocation) { _, newValue in
+            withAnimation(.easeInOut) {
+                displayPreview = newValue != nil
+            }
+        }
+        .onChange(of: displayPreview) { _, newValue in
+            if !newValue && vm.mapLocation != nil {
+                vm.mapLocation = nil
             }
         }
     }
@@ -44,9 +70,14 @@ struct LocationsView: View {
 
 extension LocationsView {
     private var headerTitle: String {
-        let name = vm.mapLocation?.name ?? ""
-        let cityName = vm.mapLocation?.cityName ?? ""
-        return name + ", " + cityName
+        if let location = vm.mapLocation {
+            return location.name + ", " + location.cityName
+        }
+        let status = vm.locationManager.authorizationStatus
+        if status == .denied || status == .restricted {
+            return "Điểm đến du lịch"
+        }
+        return "Vị trí của bạn"
     }
     private var header: some View {
         VStack {
@@ -68,7 +99,7 @@ extension LocationsView {
             }
             .buttonStyle(.plain)
             if vm.showLocationsList {
-                LocationsListView()
+                LocationsListView(displayPreview: $displayPreview)
                     .padding()
             }
         }
@@ -80,11 +111,13 @@ extension LocationsView {
     private var mapLayer: some View {
         let selectedId = vm.mapLocation?.id
         return Map(position: Bindable(vm).position) {
+            UserAnnotation()
             ForEach(vm.locations) { location in
                 Annotation(location.name, coordinate: location.coordinates) {
                     LocationMapAnnotationView(locationId: location.id, isSelected: location.id == selectedId)
                         .equatable()
                         .onTapGesture {
+                            displayPreview = true
                             vm.showNextLocation(location: location)
                         }
                 }
@@ -96,7 +129,7 @@ extension LocationsView {
         ZStack {
             ForEach(vm.locations) { location in
                 if vm.mapLocation == location {
-                    LocationPreviewView(location: location)
+                    LocationPreviewView(displayPreview: $displayPreview,location: location)
                         .shadow(color: Color.black.opacity(0.3), radius: 20)
                         .padding()
                         .transition(.asymmetric(
@@ -104,6 +137,23 @@ extension LocationsView {
                             removal: .move(edge: .leading)))
                 }
             }
+        }
+    }
+    
+    private var userLocationButton: some View {
+        HStack {
+            Spacer()
+            Button(action: {
+                vm.centerOnUserLocation()
+            }) {
+                Image(systemName: "location.fill")
+                    .font(.title2)
+                    .padding(10)
+                    .background(Color(.systemBackground))
+                    .clipShape(Circle())
+                    .shadow(radius: 4)
+            }
+            .padding(.trailing, 20)
         }
     }
 }

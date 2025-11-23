@@ -9,18 +9,20 @@ import SwiftUI
 
 struct LocationsListView: View {
     @Environment(LocationsViewModel.self) var vm
+    @Binding var displayPreview: Bool
     
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 ForEach(vm.locations) { location in
                     Button {
+                        displayPreview = true
                         vm.showNextLocation(location: location)
                     } label: {
                         listRowView(location: location)
+                            .padding(.vertical, 10)
                     }
                     .buttonStyle(.plain)
-                    .padding(.vertical, 10)
                     .listRowBackground(Color.clear)
                     Divider()
                         .padding(.leading, 60)
@@ -57,10 +59,11 @@ extension LocationsListView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .contentShape(Rectangle())
     }
 }
 
 #Preview {
-    LocationsListView()
+    LocationsListView(displayPreview: .constant(true))
         .environment(LocationsViewModel())
 }

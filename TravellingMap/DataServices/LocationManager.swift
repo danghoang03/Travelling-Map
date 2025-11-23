@@ -16,6 +16,10 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     var authorizationStatus: CLAuthorizationStatus?
     
+    var currentLocation: CLLocation? {
+        manager.location
+    }
+    
     override init() {
         super.init()
         manager.delegate = self
@@ -25,8 +29,15 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func requestLocationPermission() {
         manager.requestWhenInUseAuthorization()
     }
+    
+    func startUpdatingLocation() {
+        manager.startUpdatingLocation()
+    }
         
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         self.authorizationStatus = manager.authorizationStatus
+        if manager.authorizationStatus == .authorizedWhenInUse || manager.authorizationStatus == .authorizedAlways {
+            startUpdatingLocation()
+        }
     }
 }

@@ -41,12 +41,20 @@ class LocationsViewModel {
     }
     
     private func updatePosition(location: Location?) {
-        guard let location = location else { return }
         withAnimation(.easeInOut) {
-            self.position = .region(MKCoordinateRegion(
-                center: location.coordinates,
-                span: mapSpan
-            ))
+            if let location = location {
+                self.position = .region(MKCoordinateRegion(
+                    center: location.coordinates,
+                    span: mapSpan
+                ))
+            } else if let userLocation = locationManager.currentLocation {
+                self.position = .region(MKCoordinateRegion(
+                    center: userLocation.coordinate,
+                    span: mapSpan
+                ))
+            } else {
+                self.position = .userLocation(fallback: .automatic)
+            }
         }
     }
     
@@ -101,7 +109,13 @@ class LocationsViewModel {
         }
         
         withAnimation(.easeInOut) {
-            self.position = .userLocation(fallback: .automatic)
+            self.mapLocation = nil
+        }
+    }
+    
+    func checkLocationAuthorization() {
+        let status = locationManager.authorizationStatus
+        if status == .authorizedWhenInUse || status == .authorizedAlways {
             self.mapLocation = nil
         }
     }
