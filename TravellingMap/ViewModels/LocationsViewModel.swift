@@ -23,7 +23,7 @@ class LocationsViewModel {
     }
     
     // Current region on map
-    var position: MapCameraPosition = .region(MKCoordinateRegion())
+    var position: MapCameraPosition = .userLocation(fallback: .automatic)
     let mapSpan = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     
     // Show list of locations
@@ -32,8 +32,13 @@ class LocationsViewModel {
     // Show location detail sheet
     var sheetLocation: Location? = nil
     
+    let locationManager = LocationManager.shared
     
-    init() {}
+    var showLocationDeniedAlert: Bool = false
+    
+    init() {
+        locationManager.requestLocationPermission()
+    }
     
     private func updatePosition(location: Location?) {
         guard let location = location else { return }
@@ -80,5 +85,24 @@ class LocationsViewModel {
         //nextIndex is valid
         let nextLocation = locations[nextIndex]
         showNextLocation(location: nextLocation)
+    }
+    
+    func centerOnUserLocation() {
+        let status = locationManager.authorizationStatus
+        
+        if status == .notDetermined {
+            locationManager.requestLocationPermission()
+            return
+        }
+        
+        if status == .denied || status == .restricted {
+            showLocationDeniedAlert = true
+            return
+        }
+        
+        withAnimation(.easeInOut) {
+            self.position = .userLocation(fallback: .automatic)
+            self.mapLocation = nil
+        }
     }
 }
