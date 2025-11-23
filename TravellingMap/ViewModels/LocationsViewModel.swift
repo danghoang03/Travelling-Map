@@ -47,13 +47,6 @@ class LocationsViewModel {
                     center: location.coordinates,
                     span: mapSpan
                 ))
-            } else if let userLocation = locationManager.currentLocation {
-                self.position = .region(MKCoordinateRegion(
-                    center: userLocation.coordinate,
-                    span: mapSpan
-                ))
-            } else {
-                self.position = .userLocation(fallback: .automatic)
             }
         }
     }
@@ -110,6 +103,7 @@ class LocationsViewModel {
         
         withAnimation(.easeInOut) {
             self.mapLocation = nil
+            self.position = .userLocation(fallback: .automatic)
         }
     }
     
@@ -117,6 +111,7 @@ class LocationsViewModel {
         let status = locationManager.authorizationStatus
         if status == .authorizedWhenInUse || status == .authorizedAlways {
             self.mapLocation = nil
+            self.position = .userLocation(fallback: .automatic)
         }
     }
 }
