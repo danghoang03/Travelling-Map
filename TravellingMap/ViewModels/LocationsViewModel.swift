@@ -36,6 +36,9 @@ class LocationsViewModel {
     
     var showLocationDeniedAlert: Bool = false
     
+    var route: MKRoute? = nil
+    var routeDestination: Location? = nil
+    
     init() {
         locationManager.requestLocationPermission()
     }
@@ -113,5 +116,55 @@ class LocationsViewModel {
             self.mapLocation = nil
             self.position = .userLocation(fallback: .automatic)
         }
+    }
+    
+    func calculateRoute(to location: Location) {
+        guard let userLocation = locationManager.manager.location?.coordinate else {
+            print("Can't get user location")
+            return
+        }
+        
+        let request = MKDirections.Request()
+        let sourceLocation = CLLocation(latitude: userLocation.latitude, longitude: userLocation.longitude)
+        let destinationLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        request.source = MKMapItem(location: sourceLocation, address: nil)
+        request.destination = MKMapItem(location: destinationLocation, address: nil)
+        request.transportType = .automobile
+        
+        Task {
+            let directions = MKDirections(request: request)
+            do {
+                let response = try await directions.calculate()
+                await MainActor.run {
+                    if let route = response.routes.first {
+                        self.route = route
+                        self.routeDestination = location
+                        
+                        let rect = route.polyline.boundingMapRect
+                        let paddedRect = rect.insetBy(dx: -rect.width * 0.3, dy: -rect.height * 0.3)
+                        self.position = .rect(paddedRect)
+                    }
+                }
+            } catch {
+                print("Error getting directions: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func openNavigationApp() {
+        guard let location = routeDestination else { return }
+            
+        let destCLLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        let mapItem = MKMapItem(location: destCLLocation, address: nil)
+        mapItem.name = location.name
+            
+        let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
+        mapItem.openInMaps(launchOptions: launchOptions)
+    }
+    
+    func clearRoute() {
+        self.route = nil
+        self.routeDestination = nil
+        updatePosition(location: mapLocation)
     }
 }
