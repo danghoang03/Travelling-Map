@@ -14,7 +14,7 @@ struct RouteView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            HStack {
+            HStack(alignment: .top) {
                 VStack(alignment: .leading) {
                     Text("Đường đi dự kiến")
                         .font(.caption)
@@ -28,6 +28,7 @@ struct RouteView: View {
                 }
                 Spacer()
                 clearRouteButton
+                    .offset(x: 10, y: -10)
             }
             openInMapsButton
         }

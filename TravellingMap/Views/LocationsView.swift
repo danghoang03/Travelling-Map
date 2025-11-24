@@ -13,7 +13,7 @@ struct LocationsView: View {
     @Environment(LocationsViewModel.self) var vm
     @Environment(\.modelContext) var context
     @Query(sort: \Location.cityName) var locations: [Location]
-    @State var displayPreview: Bool = false
+    @State var showBottomPanel: Bool = false
     
     var body: some View {
         ZStack {
@@ -25,8 +25,8 @@ struct LocationsView: View {
                 .padding()
                 Spacer()
                 userLocationButton
-                if displayPreview {
-                    locationPreview
+                if showBottomPanel {
+                    bottomPanel
                 }
                 
             }
@@ -57,10 +57,10 @@ struct LocationsView: View {
         }
         .onChange(of: vm.mapLocation) { _, newValue in
             withAnimation(.easeInOut) {
-                displayPreview = newValue != nil
+                showBottomPanel = newValue != nil
             }
         }
-        .onChange(of: displayPreview) { _, newValue in
+        .onChange(of: showBottomPanel) { _, newValue in
             if !newValue && vm.mapLocation != nil {
                 vm.mapLocation = nil
             }
@@ -96,10 +96,11 @@ extension LocationsView {
                             .padding()
                             .rotationEffect(Angle(degrees: vm.showLocationsList ? 180 : 0))
                     }
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             if vm.showLocationsList {
-                LocationsListView(displayPreview: $displayPreview)
+                LocationsListView(showBottomPanel: $showBottomPanel)
                     .padding()
             }
         }
@@ -117,24 +118,36 @@ extension LocationsView {
                     LocationMapAnnotationView(locationId: location.id, isSelected: location.id == selectedId)
                         .equatable()
                         .onTapGesture {
-                            displayPreview = true
+                            if vm.route != nil { vm.clearRoute() }
+                            showBottomPanel = true
                             vm.showNextLocation(location: location)
                         }
                 }
             }
+            if let route = vm.route {
+                MapPolyline(route)
+                    .stroke(.blue, lineWidth: 6)
+            }
         }
     }
     
-    private var locationPreview: some View {
+    private var bottomPanel: some View {
         ZStack {
             ForEach(vm.locations) { location in
                 if vm.mapLocation == location {
-                    LocationPreviewView(displayPreview: $displayPreview,location: location)
-                        .shadow(color: Color.black.opacity(0.3), radius: 20)
-                        .padding()
-                        .transition(.asymmetric(
-                            insertion: .move(edge: .trailing),
-                            removal: .move(edge: .leading)))
+                    if let route = vm.route, vm.routeDestination == location {
+                        RouteView(route: route)
+                            .shadow(color: Color.black.opacity(0.3), radius: 20)
+                            .padding()
+                            .transition(.move(edge: .bottom))
+                    } else {
+                        LocationPreviewView(showBottomPanel: $showBottomPanel,location: location)
+                            .shadow(color: Color.black.opacity(0.3), radius: 20)
+                            .padding()
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing),
+                                removal: .move(edge: .leading)))
+                    }
                 }
             }
         }
@@ -144,6 +157,7 @@ extension LocationsView {
         HStack {
             Spacer()
             Button(action: {
+                if vm.route != nil { vm.clearRoute() }
                 vm.centerOnUserLocation()
             }) {
                 Image(systemName: "location.fill")

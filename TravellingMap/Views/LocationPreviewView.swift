@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LocationPreviewView: View {
     @Environment(LocationsViewModel.self) var vm
-    @Binding var displayPreview: Bool
+    @Binding var showBottomPanel: Bool
     let location: Location
     
     var body: some View {
@@ -68,7 +68,7 @@ extension LocationPreviewView {
         Button {
             vm.sheetLocation = location
         } label: {
-            Text("Learn More")
+            Text("Tìm hiểu")
                 .font(.headline)
                 .frame(width: 125, height: 35)
         }
@@ -77,10 +77,10 @@ extension LocationPreviewView {
     
     private var nextButton: some View {
         Button {
-            displayPreview = true
-            vm.nextButtonPressed()
+            showBottomPanel = true
+            vm.calculateRoute(to: location)
         } label: {
-            Text("Next")
+            Text("Chỉ đường")
                 .font(.headline)
                 .frame(width: 125, height: 35)
         }
@@ -102,7 +102,7 @@ extension LocationPreviewView {
         ],
         link: "https://vi.wikipedia.org/wiki/Dinh_%C4%90%E1%BB%99c_L%E1%BA%ADp"
     )
-    LocationPreviewView(displayPreview: .constant(true), location: location)
+    LocationPreviewView(showBottomPanel: .constant(true), location: location)
         .padding()
         .environment(LocationsViewModel())
 }

@@ -9,14 +9,15 @@ import SwiftUI
 
 struct LocationsListView: View {
     @Environment(LocationsViewModel.self) var vm
-    @Binding var displayPreview: Bool
+    @Binding var showBottomPanel: Bool
     
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 ForEach(vm.locations) { location in
                     Button {
-                        displayPreview = true
+                        if vm.route != nil { vm.clearRoute() }
+                        showBottomPanel = true
                         vm.showNextLocation(location: location)
                     } label: {
                         listRowView(location: location)
@@ -64,6 +65,6 @@ extension LocationsListView {
 }
 
 #Preview {
-    LocationsListView(displayPreview: .constant(true))
+    LocationsListView(showBottomPanel: .constant(true))
         .environment(LocationsViewModel())
 }
