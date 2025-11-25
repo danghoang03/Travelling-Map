@@ -41,10 +41,16 @@ class LocationsViewModel {
     
     var searchText = ""
     
+    var showFavoritesOnly: Bool = false
+    
     var filteredLocations: [Location] {
-        guard !searchText.isEmpty else { return locations }
+        var result = locations
+        if showFavoritesOnly {
+            result = result.filter { $0.isFavorite }
+        }
+        guard !searchText.isEmpty else { return result }
         
-        return locations.filter { location in
+        return result.filter { location in
             location.name.localizedStandardContains(searchText) ||
             location.cityName.localizedStandardContains(searchText)
         }

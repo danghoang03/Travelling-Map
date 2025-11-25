@@ -26,7 +26,8 @@ struct LocationDTO: Codable {
             longitude: longitude,
             desc: description,
             imageURLs: imageURLs,
-            link: link
+            link: link,
+            isFavorite: false
         )
     }
 }

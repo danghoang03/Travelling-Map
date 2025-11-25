@@ -48,22 +48,31 @@ extension LocationsListView {
     }
     
     private var searchBar: some View {
-        HStack {
-            Image(systemName: "magnifyingglass")
-                .foregroundColor(.gray)
-            TextField("Nhập tên địa điểm...", text: Bindable(vm).searchText)
-                .textFieldStyle(.plain)
-            
-            if !vm.searchText.isEmpty {
-                Button(action: { vm.searchText = "" }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(.gray)
+        VStack(spacing: 10) {
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.gray)
+                TextField("Nhập tên địa điểm...", text: Bindable(vm).searchText)
+                    .textFieldStyle(.plain)
+                
+                if !vm.searchText.isEmpty {
+                    Button(action: { vm.searchText = "" }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.gray)
+                    }
                 }
             }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(10)
+            
+            Toggle(isOn: Bindable(vm).showFavoritesOnly) {
+                Label("Địa điểm yêu thích", systemImage: "heart.fill")
+                        .foregroundColor(.red)
+                }
+                .toggleStyle(SwitchToggleStyle(tint: .red))
+                .padding(.horizontal, 4)
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(10)
     }
     
     private var locationList: some View {

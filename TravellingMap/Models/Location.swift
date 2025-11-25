@@ -19,12 +19,13 @@ class Location: Equatable {
     var desc: String
     var imageURLs: [String]
     var link: String
+    var isFavorite: Bool = false
     
     var coordinates: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
     
-    init(id: String, name: String, cityName: String, latitude: Double, longitude: Double, desc: String, imageURLs: [String], link: String) {
+    init(id: String, name: String, cityName: String, latitude: Double, longitude: Double, desc: String, imageURLs: [String], link: String, isFavorite: Bool) {
         self.id = id
         self.name = name
         self.cityName = cityName
@@ -33,6 +34,7 @@ class Location: Equatable {
         self.desc = desc
         self.imageURLs = imageURLs
         self.link = link
+        self.isFavorite = isFavorite
     }
     
     // Equatable

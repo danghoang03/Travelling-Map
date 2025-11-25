@@ -35,12 +35,19 @@ class LocationsDataService {
             
             let receivedIDs = locationsDTO.map { $0.name + $0.cityName }
             
+            let favoriteDescriptor = FetchDescriptor<Location>(predicate: #Predicate { $0.isFavorite })
+            let existingFavorites = try? context.fetch(favoriteDescriptor)
+            let favoriteIDs = Set(existingFavorites?.map { $0.id } ?? [])
+            
             try? context.delete(model: Location.self, where: #Predicate { location in
                 !receivedIDs.contains(location.id)
             })
             
             for locationDTO in locationsDTO {
                 let locationModel = locationDTO.toModel()
+                if favoriteIDs.contains(locationModel.id) {
+                    locationModel.isFavorite = true
+                }
                 context.insert(locationModel)
             }
             try context.save()

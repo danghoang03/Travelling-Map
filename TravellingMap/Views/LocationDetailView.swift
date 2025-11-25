@@ -9,7 +9,7 @@ import SwiftUI
 import MapKit
 
 struct LocationDetailView: View {
-    let location: Location
+    @Bindable var location: Location
     @Environment(LocationsViewModel.self) var vm
     
     var body: some View {
@@ -31,6 +31,7 @@ struct LocationDetailView: View {
         .ignoresSafeArea()
         .background(.ultraThinMaterial)
         .overlay(backButton, alignment: .topLeading)
+        .overlay(favoriteButton, alignment: .topTrailing)
     }
 }
 
@@ -105,6 +106,23 @@ extension LocationDetailView {
         }
         .padding()
     }
+    
+    private var favoriteButton: some View {
+        Button {
+            withAnimation(.snappy) {
+                location.isFavorite.toggle()
+            }
+        } label: {
+            Image(systemName: location.isFavorite ? "heart.fill" : "heart")
+                .font(.title2)
+                .padding(16)
+                .foregroundColor(location.isFavorite ? .red : .primary)
+                .background(.thickMaterial)
+                .cornerRadius(10)
+                .shadow(radius: 4)
+        }
+        .padding()
+    }
 }
 
 #Preview {
@@ -119,8 +137,9 @@ extension LocationDetailView {
             "https://images.unsplash.com/photo-1592114714621-ccc6cacad26b?q=80&w=500&h=500",
             "https://images.unsplash.com/photo-1592114716576-0e4a1c6ba02d?q=80&w=500&h=500"
         ],
-        link: "https://vi.wikipedia.org/wiki/Dinh_%C4%90%E1%BB%99c_L%E1%BA%ADp"
+        link: "https://vi.wikipedia.org/wiki/Dinh_%C4%90%E1%BB%99c_L%E1%BA%ADp",
+        isFavorite: true
     )
-    return LocationDetailView(location:location)
+    return LocationDetailView(location: location)
         .environment(LocationsViewModel())
 }

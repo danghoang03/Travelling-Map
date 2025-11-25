@@ -56,8 +56,14 @@ extension LocationPreviewView {
     
     private var titleSection: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(location.name)
-                .font(.title2.bold())
+            HStack {
+                Text(location.name)
+                    .font(.title2.bold())
+                if location.isFavorite {
+                    Image(systemName: "heart.fill")
+                        .foregroundColor(.red)
+                }
+            }
             Text(location.cityName)
                 .font(.subheadline)
         }
@@ -100,7 +106,8 @@ extension LocationPreviewView {
             "https://images.unsplash.com/photo-1592114714621-ccc6cacad26b?q=80&w=500&h=500",
             "https://images.unsplash.com/photo-1592114716576-0e4a1c6ba02d?q=80&w=500&h=500"
         ],
-        link: "https://vi.wikipedia.org/wiki/Dinh_%C4%90%E1%BB%99c_L%E1%BA%ADp"
+        link: "https://vi.wikipedia.org/wiki/Dinh_%C4%90%E1%BB%99c_L%E1%BA%ADp",
+        isFavorite: false
     )
     LocationPreviewView(showBottomPanel: .constant(true), location: location)
         .padding()
