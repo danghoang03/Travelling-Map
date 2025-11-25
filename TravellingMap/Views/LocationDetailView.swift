@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MapKit
+import Kingfisher
 
 struct LocationDetailView: View {
     @Bindable var location: Location
@@ -39,15 +40,16 @@ extension LocationDetailView {
     private var imageSection: some View {
         TabView {
             ForEach(location.imageURLs, id: \.self) { imageURL in
-                AsyncImage(url: URL(string: imageURL)) { image in
-                    image
+                if let url = URL(string: imageURL) {
+                    KFImage(url)
+                        .placeholder {
+                            ProgressView()
+                        }
                         .resizable()
                         .scaledToFill()
-                } placeholder: {
-                    ProgressView()
+                        .containerRelativeFrame(.horizontal)
+                        .clipped()
                 }
-                    .containerRelativeFrame(.horizontal)
-                    .clipped()
             }
         }
         .frame(height: 500)

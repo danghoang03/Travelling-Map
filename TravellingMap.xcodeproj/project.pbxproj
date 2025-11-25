@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		898010092EDF33E500D74AEA /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 898010082EDF33E500D74AEA /* Kingfisher */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		898D15C82ED9EA18003E315F /* TravellingMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravellingMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				898010092EDF33E500D74AEA /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = TravellingMap;
 			packageProductDependencies = (
+				898010082EDF33E500D74AEA /* Kingfisher */,
 			);
 			productName = TravellingMap;
 			productReference = 898D15C82ED9EA18003E315F /* TravellingMap.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 898D15BF2ED9EA18003E315F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				898010072EDF33E500D74AEA /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 898D15C92ED9EA18003E315F /* Products */;
 			projectDirPath = "";
@@ -334,6 +343,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		898010072EDF33E500D74AEA /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.6.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		898010082EDF33E500D74AEA /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 898010072EDF33E500D74AEA /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 898D15C02ED9EA18003E315F /* Project object */;
 }

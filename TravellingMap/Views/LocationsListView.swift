@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct LocationsListView: View {
     @Environment(LocationsViewModel.self) var vm
@@ -22,16 +23,15 @@ struct LocationsListView: View {
 extension LocationsListView {
     private func listRowView(location: Location) -> some View {
         HStack {
-            if let imageURL = location.imageURLs.first {
-                AsyncImage(url: URL(string: imageURL)) { image in
-                    image
+            if let imageURL = location.imageURLs.first, let url = URL(string: imageURL) {
+                    KFImage(url)
+                        .placeholder {
+                        ProgressView()
+                        }
                         .resizable()
                         .scaledToFill()
-                } placeholder: {
-                    ProgressView()
-                }
-                .frame(width: 44, height: 44)
-                .cornerRadius(10)
+                        .frame(width: 44, height: 44)
+                        .cornerRadius(10)
             }
             
             VStack(alignment: .leading) {
