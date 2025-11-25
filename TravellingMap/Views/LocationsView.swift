@@ -101,7 +101,8 @@ extension LocationsView {
             .buttonStyle(.plain)
             if vm.showLocationsList {
                 LocationsListView(showBottomPanel: $showBottomPanel)
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.bottom)
             }
         }
         .background(.thickMaterial)
