@@ -39,6 +39,17 @@ class LocationsViewModel {
     var route: MKRoute? = nil
     var routeDestination: Location? = nil
     
+    var searchText = ""
+    
+    var filteredLocations: [Location] {
+        guard !searchText.isEmpty else { return locations }
+        
+        return locations.filter { location in
+            location.name.localizedStandardContains(searchText) ||
+            location.cityName.localizedStandardContains(searchText)
+        }
+    }
+    
     init() {
         locationManager.requestLocationPermission()
     }
@@ -57,6 +68,9 @@ class LocationsViewModel {
     func toggleLocationsList() {
         withAnimation(.easeInOut) {
             showLocationsList.toggle()
+            if !showLocationsList {
+                searchText = ""
+            }
         }
     }
     
