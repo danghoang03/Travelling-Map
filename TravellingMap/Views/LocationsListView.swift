@@ -94,7 +94,7 @@ extension LocationsListView {
                 }
             }
         }
-        .frame(height: 350)
+        .frame(height: 300)
         .background(Color.clear)
     }
 }

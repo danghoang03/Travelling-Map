@@ -76,7 +76,7 @@ extension LocationPreviewView {
         } label: {
             Text("Tìm hiểu")
                 .font(.headline)
-                .frame(width: 125, height: 35)
+                .frame(width: 100, height: 35)
         }
         .buttonStyle(.borderedProminent)
     }
@@ -88,7 +88,7 @@ extension LocationPreviewView {
         } label: {
             Text("Chỉ đường")
                 .font(.headline)
-                .frame(width: 125, height: 35)
+                .frame(width: 100, height: 35)
         }
         .buttonStyle(.bordered)
     }

@@ -46,8 +46,13 @@ struct LocationsView: View {
         } message: {
             Text("Vui lòng cấp quyền truy cập vị trí trong Cài đặt để ứng dụng có thể hiển thị vị trí của bạn trên bản đồ.")
         }
+        .alert("Thông báo", isPresented: Bindable(vm).showErrorAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(vm.errorMessage)
+        }
         .task {
-            await LocationsDataService.shared.fetchAndSaveData(context: context)
+            await vm.loadLocationsData(context: context)
         }
         .onChange(of: vm.locationManager.authorizationStatus) { oldValue, newValue in
             vm.checkLocationAuthorization()

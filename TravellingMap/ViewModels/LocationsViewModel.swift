@@ -9,6 +9,7 @@ import Foundation
 import Observation
 import SwiftUI
 import MapKit
+import SwiftData
 
 @Observable
 class LocationsViewModel {
@@ -56,8 +57,23 @@ class LocationsViewModel {
         }
     }
     
+    var errorMessage: String = ""
+    var showErrorAlert: Bool = false
+    
     init() {
         locationManager.requestLocationPermission()
+    }
+    
+    func loadLocationsData(context: ModelContext) async {
+        do {
+            try await LocationsDataService.shared.fetchAndSaveData(context: context)
+        } catch {
+            print("Error: \(error.localizedDescription)") //
+            await MainActor.run {
+                self.errorMessage = "Không thể tải dữ liệu: \(error.localizedDescription)"
+                self.showErrorAlert = true
+            }
+        }
     }
     
     private func updatePosition(location: Location?) {
@@ -116,7 +132,6 @@ class LocationsViewModel {
     
     func calculateRoute(to location: Location) {
         guard let userLocation = locationManager.manager.location?.coordinate else {
-            print("Can't get user location")
             return
         }
         
@@ -142,7 +157,10 @@ class LocationsViewModel {
                     }
                 }
             } catch {
-                print("Error getting directions: \(error.localizedDescription)")
+                await MainActor.run {
+                    self.errorMessage = "Không tìm thấy đường đi: \(error.localizedDescription)"
+                    self.showErrorAlert = true
+                }
             }
         }
     }
