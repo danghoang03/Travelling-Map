@@ -10,14 +10,30 @@
 		898010092EDF33E500D74AEA /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 898010082EDF33E500D74AEA /* Kingfisher */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		89B0B4FE2EDFD5DD00946DA1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 898D15C02ED9EA18003E315F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 898D15C72ED9EA18003E315F;
+			remoteInfo = TravellingMap;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		898D15C82ED9EA18003E315F /* TravellingMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravellingMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		89B0B4FA2EDFD5DD00946DA1 /* TravellingMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravellingMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		898D15CA2ED9EA18003E315F /* TravellingMap */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = TravellingMap;
+			sourceTree = "<group>";
+		};
+		89B0B4FB2EDFD5DD00946DA1 /* TravellingMapTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TravellingMapTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -31,6 +47,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		89B0B4F72EDFD5DD00946DA1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -38,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				898D15CA2ED9EA18003E315F /* TravellingMap */,
+				89B0B4FB2EDFD5DD00946DA1 /* TravellingMapTests */,
 				898D15C92ED9EA18003E315F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				898D15C82ED9EA18003E315F /* TravellingMap.app */,
+				89B0B4FA2EDFD5DD00946DA1 /* TravellingMapTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,6 +101,29 @@
 			productReference = 898D15C82ED9EA18003E315F /* TravellingMap.app */;
 			productType = "com.apple.product-type.application";
 		};
+		89B0B4F92EDFD5DD00946DA1 /* TravellingMapTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 89B0B5002EDFD5DD00946DA1 /* Build configuration list for PBXNativeTarget "TravellingMapTests" */;
+			buildPhases = (
+				89B0B4F62EDFD5DD00946DA1 /* Sources */,
+				89B0B4F72EDFD5DD00946DA1 /* Frameworks */,
+				89B0B4F82EDFD5DD00946DA1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				89B0B4FF2EDFD5DD00946DA1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				89B0B4FB2EDFD5DD00946DA1 /* TravellingMapTests */,
+			);
+			name = TravellingMapTests;
+			packageProductDependencies = (
+			);
+			productName = TravellingMapTests;
+			productReference = 89B0B4FA2EDFD5DD00946DA1 /* TravellingMapTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -88,6 +136,10 @@
 				TargetAttributes = {
 					898D15C72ED9EA18003E315F = {
 						CreatedOnToolsVersion = 26.0.1;
+					};
+					89B0B4F92EDFD5DD00946DA1 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = 898D15C72ED9EA18003E315F;
 					};
 				};
 			};
@@ -109,12 +161,20 @@
 			projectRoot = "";
 			targets = (
 				898D15C72ED9EA18003E315F /* TravellingMap */,
+				89B0B4F92EDFD5DD00946DA1 /* TravellingMapTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		898D15C62ED9EA18003E315F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89B0B4F82EDFD5DD00946DA1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -131,7 +191,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		89B0B4F62EDFD5DD00946DA1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		89B0B4FF2EDFD5DD00946DA1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 898D15C72ED9EA18003E315F /* TravellingMap */;
+			targetProxy = 89B0B4FE2EDFD5DD00946DA1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		898D15D12ED9EA18003E315F /* Debug */ = {
@@ -321,6 +396,48 @@
 			};
 			name = Release;
 		};
+		89B0B5012EDFD5DD00946DA1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S6L523T38S;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.Hoang.Dang.TravellingMapTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TravellingMap.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TravellingMap";
+			};
+			name = Debug;
+		};
+		89B0B5022EDFD5DD00946DA1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S6L523T38S;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.Hoang.Dang.TravellingMapTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TravellingMap.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TravellingMap";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -338,6 +455,15 @@
 			buildConfigurations = (
 				898D15D42ED9EA18003E315F /* Debug */,
 				898D15D52ED9EA18003E315F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		89B0B5002EDFD5DD00946DA1 /* Build configuration list for PBXNativeTarget "TravellingMapTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				89B0B5012EDFD5DD00946DA1 /* Debug */,
+				89B0B5022EDFD5DD00946DA1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
