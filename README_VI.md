@@ -20,6 +20,10 @@
 * **Thông tin chi tiết**: Xem hình ảnh, mô tả và liên kết đến Wikipedia cho từng địa điểm.
 * **Hoạt động Offline**: Dữ liệu được lưu trữ cục bộ bằng **SwiftData**, đảm bảo ứng dụng hoạt động mượt mà ngay cả khi không có mạng (tự động cập nhật dữ liệu mới mỗi 24 giờ).
 
+## 🎥 Demo
+
+https://github.com/user-attachments/assets/8217b8e6-9330-4768-8819-fd507b2d8ece
+
 ## 🛠 Công nghệ sử dụng
 
 * **Ngôn ngữ**: Swift 6+

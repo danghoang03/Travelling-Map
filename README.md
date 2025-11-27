@@ -20,6 +20,10 @@
 * **Detailed Insights**: View images, descriptions, and Wikipedia links for each location.
 * **Offline Capability**: Data is cached locally using **SwiftData**, ensuring the app works even without an internet connection (updates every 24 hours).
 
+## 🎥 Demo
+
+https://github.com/user-attachments/assets/8217b8e6-9330-4768-8819-fd507b2d8ece
+
 ## 🛠 Tech Stack
 
 * **Language**: Swift 6+
