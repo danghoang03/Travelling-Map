@@ -10,7 +10,6 @@ import Kingfisher
 
 struct LocationsListView: View {
     @Environment(LocationsViewModel.self) var vm
-    @Binding var showBottomPanel: Bool
     
     var body: some View {
         VStack(spacing: 0) {
@@ -81,7 +80,6 @@ extension LocationsListView {
                 ForEach(vm.filteredLocations) { location in
                     Button {
                         if vm.route != nil { vm.clearRoute() }
-                        showBottomPanel = true
                         vm.showNextLocation(location: location)
                     } label: {
                         listRowView(location: location)
@@ -100,6 +98,6 @@ extension LocationsListView {
 }
 
 #Preview {
-    LocationsListView(showBottomPanel: .constant(true))
+    LocationsListView()
         .environment(LocationsViewModel())
 }

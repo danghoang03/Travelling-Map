@@ -10,7 +10,6 @@ import Kingfisher
 
 struct LocationPreviewView: View {
     @Environment(LocationsViewModel.self) var vm
-    @Binding var showBottomPanel: Bool
     let location: Location
     
     var body: some View {
@@ -22,7 +21,7 @@ struct LocationPreviewView: View {
             
             VStack(spacing: 8) {
                 learnMoreButton
-                nextButton
+                routeButton
             }
         }
         .padding(20)
@@ -81,9 +80,8 @@ extension LocationPreviewView {
         .buttonStyle(.borderedProminent)
     }
     
-    private var nextButton: some View {
+    private var routeButton: some View {
         Button {
-            showBottomPanel = true
             vm.calculateRoute(to: location)
         } label: {
             Text("Chỉ đường")
@@ -109,7 +107,7 @@ extension LocationPreviewView {
         link: "https://vi.wikipedia.org/wiki/Dinh_%C4%90%E1%BB%99c_L%E1%BA%ADp",
         isFavorite: false
     )
-    LocationPreviewView(showBottomPanel: .constant(true), location: location)
+    LocationPreviewView(location: location)
         .padding()
         .environment(LocationsViewModel())
 }

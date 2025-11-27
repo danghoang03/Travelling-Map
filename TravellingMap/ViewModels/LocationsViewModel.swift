@@ -24,9 +24,14 @@ class LocationsViewModel {
     
     /// Currently selected location on the map
     /// Automatically updates camera position when changed
+    /// Automatically updates showBottomPanel when changed: turn off bottomPanel (showBottomPanel = false) if mapLocation = nil
     var mapLocation: Location? = nil {
         didSet {
             updatePosition(location: mapLocation)
+            let shouldShowPanel = mapLocation != nil
+            if showBottomPanel != shouldShowPanel {
+                showBottomPanel = shouldShowPanel
+            }
         }
     }
     
@@ -60,6 +65,9 @@ class LocationsViewModel {
     
     /// Filter to show only favorite locations
     var showFavoritesOnly: Bool = false
+    
+    /// Shows bottom panel (RouteView/LocationPreviewView)
+    var showBottomPanel: Bool = false
     
     /// Error message for alert display
     var errorMessage: String = ""
@@ -146,7 +154,7 @@ class LocationsViewModel {
     func showNextLocation(location: Location) {
         withAnimation(.easeInOut) {
             self.mapLocation = location
-            showLocationsList = false
+            self.showLocationsList = false
         }
     }
     

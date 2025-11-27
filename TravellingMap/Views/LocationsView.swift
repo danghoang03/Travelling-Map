@@ -13,7 +13,6 @@ struct LocationsView: View {
     @Environment(LocationsViewModel.self) var vm
     @Environment(\.modelContext) var context
     @Query(sort: \Location.cityName) var locations: [Location]
-    @State var showBottomPanel: Bool = false
     
     var body: some View {
         ZStack {
@@ -25,7 +24,7 @@ struct LocationsView: View {
                 .padding()
                 Spacer()
                 userLocationButton
-                if showBottomPanel {
+                if vm.showBottomPanel {
                     bottomPanel
                 }
                 
@@ -59,16 +58,6 @@ struct LocationsView: View {
         }
         .onChange(of: locations, initial: true) { oldValue, newValue in
             vm.locations = newValue
-        }
-        .onChange(of: vm.mapLocation) { _, newValue in
-            withAnimation(.easeInOut) {
-                showBottomPanel = newValue != nil
-            }
-        }
-        .onChange(of: showBottomPanel) { _, newValue in
-            if !newValue && vm.mapLocation != nil {
-                vm.mapLocation = nil
-            }
         }
     }
 }
@@ -105,7 +94,7 @@ extension LocationsView {
             }
             .buttonStyle(.plain)
             if vm.showLocationsList {
-                LocationsListView(showBottomPanel: $showBottomPanel)
+                LocationsListView()
                     .padding(.horizontal)
                     .padding(.bottom)
             }
@@ -125,7 +114,6 @@ extension LocationsView {
                         .equatable()
                         .onTapGesture {
                             if vm.route != nil { vm.clearRoute() }
-                            showBottomPanel = true
                             vm.showNextLocation(location: location)
                         }
                 }
@@ -147,7 +135,7 @@ extension LocationsView {
                             .padding()
                             .transition(.move(edge: .bottom))
                     } else {
-                        LocationPreviewView(showBottomPanel: $showBottomPanel,location: location)
+                        LocationPreviewView(location: location)
                             .shadow(color: Color.black.opacity(0.3), radius: 20)
                             .padding()
                             .transition(.asymmetric(
